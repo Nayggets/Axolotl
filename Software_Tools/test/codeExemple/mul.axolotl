@@ -1,0 +1,26 @@
+.section text
+
+main:
+    set R3,32
+    set R4,2
+    set R16,mul
+    je R4,R4,j1
+    hlt
+
+
+
+
+mul
+    and R14,R3,R3
+    and R12,R4,R4
+    set R13, 0
+    set R11, 1
+    set R15, end
+    set R16, loop
+    loop:
+        je R12,R13,R15
+        add R13,R13,R14 
+        sub R12,R12,R11
+        je R12,R12,R16
+    end:
+
