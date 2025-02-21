@@ -2,9 +2,9 @@
 -- Company: 
 -- Engineer: 
 -- 
--- Create Date: 02/20/2025 01:42:48 PM
+-- Create Date: 02/21/2025 02:56:40 PM
 -- Design Name: 
--- Module Name: Sll - Behavioral
+-- Module Name: ProgramCounter_tb - Behavioral
 -- Project Name: 
 -- Target Devices: 
 -- Tool Versions: 
@@ -21,7 +21,7 @@
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.numeric_std.ALL;
+
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
 --use IEEE.NUMERIC_STD.ALL;
@@ -31,16 +31,13 @@ use IEEE.numeric_std.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity mySll is
-    Port ( a : in STD_LOGIC_VECTOR (15 downto 0);
-           b : in STD_LOGIC_VECTOR (15 downto 0);
-           c : out STD_LOGIC_VECTOR (15 downto 0));
-end mySll;
+entity ProgramCounter_tb is
+--  Port ( );
+end ProgramCounter_tb;
 
-architecture Behavioral of mySll is
+architecture Behavioral of ProgramCounter_tb is
 
 begin
-    c <= std_logic_vector(shift_left(unsigned(a),to_integer(unsigned(b))));
 
 
 end Behavioral;

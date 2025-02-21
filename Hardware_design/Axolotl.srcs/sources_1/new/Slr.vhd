@@ -21,7 +21,7 @@
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-
+use IEEE.numeric_std.ALL;
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
 --use IEEE.NUMERIC_STD.ALL;
@@ -39,6 +39,6 @@ end mySlr;
 
 architecture Behavioral of mySlr is
 begin
-    c <= shift_right(a,b);
+    c <= std_logic_vector(shift_right(unsigned(a),TO_INTEGER(unsigned(b))));
 
 end Behavioral;

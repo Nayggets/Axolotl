@@ -36,8 +36,20 @@ entity Slr_tb is
 end Slr_tb;
 
 architecture Behavioral of Slr_tb is
-
+    signal a : STD_LOGIC_VECTOR(15 downto 0);
+    signal b : STD_LOGIC_VECTOR(15 downto 0);
+    signal c : STD_LOGIC_VECTOR(15 downto 0);
 begin
+    inst_slr : entity work.mySlr
+        port map( a => a,
+                  b => b,
+                  c => c);
 
+    test_process : process
+    begin
+        a <= "1110000000000000";
+        b <= "0000000000000001";
+        wait;
+    end process;
 
 end Behavioral;

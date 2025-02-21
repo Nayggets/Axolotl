@@ -36,8 +36,21 @@ entity And_tb is
 end And_tb;
 
 architecture Behavioral of And_tb is
-
+    signal a : STD_LOGIC_VECTOR(15 downto 0);
+    signal b : STD_LOGIC_VECTOR(15 downto 0);
+    signal c : STD_LOGIC_VECTOR(15 downto 0);
 begin
+    inst_and : entity work.myAnd
+        port map( a => a,
+                  b => b,
+                  c => c);
 
+    test_process : process
+    begin
+        a <= "1110000000000000";
+        b <= "1011111111111111";
+        wait;
+    end process;
+        
 
 end Behavioral;
