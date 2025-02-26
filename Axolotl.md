@@ -6,9 +6,9 @@
 
 L type is a group of logical instruction it regroup all the instruction to do logical calculus.
 
-### S type
+### I type
 
-S type is a group of logical instruction to set a immediate value to a register
+I type is a group of logical instruction to set a immediate value to a register
 
 ### M type
 
@@ -24,20 +24,20 @@ J type is a group of instruction to do branching or calling function.
 | ----------------------- | ---- | ------------------- | ----------------------------------------------------------------------------- |
 | add rd,rx,ry            | L    | 0000 brd brx bry    | rd = rx +ry                                  if(rx+ry > 2^(16)) carry = 1     |
 | sub rd,rx,ry            | L    | 0001 brd brx bry    | rd = rx - ry                                    if(rx - ry < -2^(15)) deb = 1 |
-| load_lsb rd, imm[8bits] | S    | 0010 brd bimm       | rd[7:0] = imm                                                                 |
-| load_msb rd, imm[8bits] | S    | 0011 brd bimm       | rd[15:8] = imm                                                                |
-| mem_store rd,imm(rx)    | M    | 0100 brd bimm brx   | mem[rx+imm] = rd                                                              |
-| mem_load rd,imm(rx)     | M    | 0101 brd bimm brx   | rd = mem[rx+imm]                                                              |
-| xor rd,rx,ry            | L    | 0110 brd brx bry    | rd = rx xor ry                                                                |
-| and rd,rx,ry            | L    | 0111 brd brx bry    | rd = rx and ry                                                                |
-| not rd,rx               | L    | 1000 brd brx 0000   | rd = !rx                                                                      |
-| or rd,rx,ry             | L    | 1001 brd brx bry    | rd = rx or ry                                                                 |
-| sll rd,rx,ry            | L    | 1010 brd brx bry    | rd = rx << ry                                                                 |
-| slr rd,rx,ry            | L    | 1011 brd brx bry    | rd = rx >> ry                                                                 |
+| xor rd,rx,ry            | L    | 0010 brd brx bry    | rd = rx xor ry                                                                |
+| and rd,rx,ry            | L    | 0011 brd brx bry    | rd = rx and ry                                                                |
+| not rd,rx               | L    | 0100 brd brx 0000   | rd = !rx                                                                      |
+| or rd,rx,ry             | L    | 0101 brd brx bry    | rd = rx or ry                                                                 |
+| sll rd,rx,ry            | L    | 0110 brd brx bry    | rd = rx << ry                                                                 |
+| slr rd,rx,ry            | L    | 0111 brd brx bry    | rd = rx >> ry                                                                 |
+| load_lsb rd, imm[8bits] | I    | 1000 brd bimm       | rd[7:0] = imm                                                                 |
+| load_msb rd, imm[8bits] | I    | 1001 brd bimm       | rd[15:8] = imm                                                                |
+| mem_store rd,imm(rx)    | M    | 1010 brd bimm brx   | mem[rx+imm] = rd                                                              |
+| mem_load rd,imm(rx)     | M    | 1011 brd bimm brx   | rd = mem[rx+imm]                                                              |
 | je rx,ry,rz             | J    | 1100 brx bry brz    | if(rx==ry) R2 = pc ; pc = rz                                                  |
 | jlt rx,ry,rz            | J    | 1101 0000 0000 brz  | if(rx < ry) R2 = pc ; pc = rz                                                 |
 | jgt rx,ry,rz            | J    | 1110 brx bry brz    | if(rx > ry ) R2=pc ; pc = rz                                                  |
-| ret                     | J    | 1111 0000 0000 0000 | pc = R2                                                                       |
+| `ret`                   | J    | 1111 0000 0000 0000 | pc = R2                                                                       |
 
 ## Pseudo instruction
 
