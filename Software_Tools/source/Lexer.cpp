@@ -58,13 +58,14 @@ int Lexer::getTok(token_t* token)
             str += lastChar;
             lastChar = this->getChar();
         }
-        while((isalpha(lastChar) || isdigit(lastChar)) && lastChar != '\n'){
+        while((isalpha(lastChar) || isdigit(lastChar) || lastChar == '_') && lastChar != '\n'){
             str += lastChar;
             lastChar = this->getChar();
         }
         if(lastChar == ':'){
             str += lastChar;
             lastChar = this->getChar();
+            token->word = str.c_str();
             if(token->token_type == tok_section){
                 token->token_type = tok_error;
                 return -1;

@@ -12,6 +12,7 @@ class IAST
     public:
         virtual void print() = 0;
         virtual ~IAST() = default;
+        virtual IAST* getChildren(int index) = 0;
 };
 
 
@@ -25,6 +26,7 @@ class ASTProgNode : public IAST
         void print();
         void addNode(IAST* iast);
         void updateLabel(std::map<std::string,uint32_t>& labelTable);
+        IAST* getChildren(int index);
     private:
         std::vector<IAST*> programs;
 };
@@ -34,9 +36,11 @@ class ASTTerminalNodeNumber : public IAST
     public:
         ASTTerminalNodeNumber(uint8_t number);
         ~ASTTerminalNodeNumber();
+        uint8_t getValue();
         void print();
+        IAST* getChildren(int index);        
     private:
-        int8_t number;
+        uint8_t number;
 };
 
 class ASTTerminalNodeRegister : public IAST
@@ -45,6 +49,8 @@ class ASTTerminalNodeRegister : public IAST
         ASTTerminalNodeRegister(const char* registerName);
         ~ASTTerminalNodeRegister();
         void print();
+        uint8_t getNumberRegister();
+        IAST* getChildren(int index);
     private:
         char registerName[3];
 };
@@ -57,6 +63,7 @@ class ASTTerminalNodeInstruction : public IAST
         ~ASTTerminalNodeInstruction();
         const char* getInstruction();
         void print();
+        IAST* getChildren(int index);
     private:
         std::string instruction;
 };
@@ -68,6 +75,7 @@ class ASTJTypeInstructionNode : public IAST
         ASTJTypeInstructionNode(ASTTerminalNodeInstruction* instruction,ASTTerminalNodeRegister* rx,ASTTerminalNodeRegister* ry,ASTTerminalNodeRegister* rz);
         ~ASTJTypeInstructionNode();
         void print();
+        IAST* getChildren(int index);
     private:
         std::unique_ptr<ASTTerminalNodeInstruction> instruction; // jump instruction
         std::unique_ptr<ASTTerminalNodeRegister> rx; // rx
@@ -83,7 +91,7 @@ class ASTLTypeInstructionNode : public IAST
         ASTLTypeInstructionNode(ASTTerminalNodeInstruction* instruction,ASTTerminalNodeRegister* rd, ASTTerminalNodeRegister* rx, ASTTerminalNodeRegister* ry);
         ~ASTLTypeInstructionNode();
         void print();
-
+        IAST* getChildren(int index);
     private:
         std::unique_ptr<ASTTerminalNodeInstruction> instruction;
         std::unique_ptr<ASTTerminalNodeRegister> rd;
@@ -94,7 +102,7 @@ class ASTLTypeInstructionNode : public IAST
 
 class ASTMTypeInstructionNode : public IAST
 {
-
+    IAST* getChildren(int index);
     private:
         std::unique_ptr<ASTTerminalNodeInstruction> instruction;
 };
@@ -106,8 +114,8 @@ class ASTITypeInstructionNode : public IAST
         ~ASTITypeInstructionNode();
         void print();
         std::string* getTempLabel();
-        void update(const int16_t address);
-
+        void update(const uint16_t address);
+        IAST* getChildren(int index);
     private:
         std::unique_ptr<ASTTerminalNodeInstruction> instruction;
         std::unique_ptr<ASTTerminalNodeRegister> rd;

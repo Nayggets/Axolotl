@@ -1,4 +1,4 @@
-.section text
+
 
 main:
     set R3,32

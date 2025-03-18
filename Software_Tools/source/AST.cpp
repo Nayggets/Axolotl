@@ -41,6 +41,14 @@ void ASTProgNode::updateLabel(std::map<std::string, uint32_t>& labelTable)
     }
 }
 
+IAST *ASTProgNode::getChildren(int index)
+{
+    if(index < this->programs.size()){
+        return this->programs.at(index);
+    }
+    return nullptr;
+}
+
 void ASTProgNode::print()
 {
     std::cout << "(Prog Node : ";
@@ -78,6 +86,32 @@ void ASTJTypeInstructionNode::print()
     std::cout << ")";
 }
 
+IAST *ASTJTypeInstructionNode::getChildren(int index)
+{
+    switch (index)
+    {
+    case 0:
+        /* code */
+        return instruction.get();
+        break;
+    case 1:
+        /* code */
+        return this->rx.get();
+        break;
+    case 2:
+        /* code */
+        return this->ry.get();
+        break;
+    case 3:
+        /* code */
+        return this->rz.get();
+        break;
+    
+    default:
+        break;
+    }
+    return nullptr;
+}
 
 //// L type instruction
 
@@ -105,6 +139,34 @@ void ASTLTypeInstructionNode::print()
     std::cout << ")";
 }
 
+IAST *ASTLTypeInstructionNode::getChildren(int index)
+{
+    switch (index)
+    {
+    case 0:
+        /* code */
+        return instruction.get();
+        break;
+    case 1:
+        /* code */
+        return rd.get();
+        break;
+    case 2:
+        /* code */
+        return rx.get();
+        break;
+    case 3:
+        /* code */
+        return ry.get();
+        break;
+    
+    default:
+        return nullptr;
+        break;
+    }
+    return nullptr;
+}
+
 //// M type instruction 
 
 
@@ -126,7 +188,7 @@ std::string *ASTITypeInstructionNode::getTempLabel()
     return nullptr;
 }
 
-void ASTITypeInstructionNode::update(const int16_t address)
+void ASTITypeInstructionNode::update(const uint16_t address)
 {
    if(strcmp(this->instruction->getInstruction(),"load_lsb") == 0){
         this->imm = std::make_unique<ASTTerminalNodeNumber>(address & 0xFF);
@@ -137,6 +199,28 @@ void ASTITypeInstructionNode::update(const int16_t address)
    this->temp_label.clear();
 }
 
+IAST *ASTITypeInstructionNode::getChildren(int index)
+{
+    switch (index)
+    {
+    case 0:
+        /* code */
+        return instruction.get();
+        break;
+    case 1:
+        /* code */
+        return rd.get();
+        break;
+    case 2:
+        /* code */
+        return imm.get();
+        break; 
+    default:
+        return nullptr;
+        break;
+    }
+    return nullptr;
+}
 
 ASTITypeInstructionNode::ASTITypeInstructionNode(ASTTerminalNodeInstruction* instruction,ASTTerminalNodeRegister* rd, ASTTerminalNodeNumber* number,token_t* temp_label)
 {
@@ -166,11 +250,20 @@ ASTTerminalNodeNumber::~ASTTerminalNodeNumber()
 
 }
 
+uint8_t ASTTerminalNodeNumber::getValue()
+{
+    return number;
+}
+
 void ASTTerminalNodeNumber::print()
 {
     std::cout << "(NodeNumber : " << (unsigned int)this->number << ")";
 }
 
+IAST *ASTTerminalNodeNumber::getChildren(int index)
+{
+    return nullptr;
+}
 
 ASTTerminalNodeRegister::ASTTerminalNodeRegister(const char* registerName)
 {
@@ -192,6 +285,16 @@ void ASTTerminalNodeRegister::print()
 
 
 
+uint8_t ASTTerminalNodeRegister::getNumberRegister()
+{
+    return std::strtol(&this->registerName[1],nullptr,10) -1;    
+}
+
+IAST *ASTTerminalNodeRegister::getChildren(int index)
+{
+    return nullptr;
+}
+
 //// Terminal Node Instruction
 
 ASTTerminalNodeInstruction::ASTTerminalNodeInstruction(token_t* token)
@@ -212,4 +315,14 @@ const char *ASTTerminalNodeInstruction::getInstruction()
 void ASTTerminalNodeInstruction::print()
 {
     std::cout << "(Node instruction : " << this->instruction << ")";
+}
+
+IAST *ASTTerminalNodeInstruction::getChildren(int index)
+{
+    return nullptr;
+}
+
+IAST *ASTMTypeInstructionNode::getChildren(int index)
+{
+    return nullptr;
 }
