@@ -1,0 +1,27 @@
+#-----------------------------------------------------------
+# Vivado v2024.1 (64-bit)
+# SW Build 5076996 on Wed May 22 18:36:09 MDT 2024
+# IP Build 5075265 on Wed May 22 21:45:21 MDT 2024
+# SharedData Build 5076995 on Wed May 22 18:29:18 MDT 2024
+# Start of session at: Mon Feb 24 10:35:51 2025
+# Process ID: 531276
+# Current directory: /home/nayg/Project/Axolotl
+# Command line: vivado
+# Log file: /home/nayg/Project/Axolotl/vivado.log
+# Journal file: /home/nayg/Project/Axolotl/vivado.jou
+# Running On        :nayg-IdeaPad-3-15IML05
+# Platform          :Linuxmint
+# Operating System  :Linux Mint 21.3
+# Processor Detail  :Intel(R) Core(TM) i3-10110U CPU @ 2.10GHz
+# CPU Frequency     :2600.000 MHz
+# CPU Physical cores:2
+# CPU Logical cores :4
+# Host memory       :8052 MB
+# Swap memory       :2147 MB
+# Total Virtual     :10199 MB
+# Available Virtual :5489 MB
+#-----------------------------------------------------------
+start_gui
+open_project /home/nayg/Project/Axolotl/Hardware_design/Axolotl.xpr
+update_compile_order -fileset sources_1
+source /home/nayg/Project/Axolotl/Hardware_design/testAll.Tcl

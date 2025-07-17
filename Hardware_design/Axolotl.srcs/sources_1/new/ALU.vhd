@@ -34,11 +34,14 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity ALU is
     Port ( r1 : in STD_LOGIC_VECTOR (15 downto 0);
            r2 : in STD_LOGIC_VECTOR (15 downto 0);
+           aluEnable : in STD_LOGIC;
+           branching : in STD_LOGIC;
            selectOp : in STD_LOGIC_VECTOR (2 downto 0);
+           shouldBranch : out STD_LOGIC;
            rout : out STD_LOGIC_VECTOR (15 downto 0));
 end ALU;
 
-architecture Behavioral of ALU is
+architecture Structural of ALU is
     signal andOut : STD_LOGIC_VECTOR(15 downto 0);
     signal xorOut : STD_LOGIC_VECTOR(15 downto 0);
     signal orOut : STD_LOGIC_VECTOR(15 downto 0);
@@ -47,38 +50,49 @@ architecture Behavioral of ALU is
     signal slrOut : STD_LOGIC_VECTOR(15 downto 0);
     signal addOut : STD_LOGIC_VECTOR(15 downto 0);
     signal subOut : STD_LOGIC_VECTOR(15 downto 0);
+    signal outEq  : STD_LOGIC;
+    signal outGt  : STD_LOGIC;
+    signal outLt  : STD_LOGIC;
 
 begin
     andOp : entity work.myAnd
         port map( a => r1,
                   b => r2,
+                  enable => aluEnable,
                   c => andOut);
     addOp : entity work.Adder 
         port map( a => r1,
                   b => r2,
+                  enable => aluEnable,
                   c => addOut);
     subOp : entity work.Substractor
         port map( a => r1,
                   b => r2,
+                  enable => aluEnable,
                   c => subOut);
     sllOp : entity work.mySll
         port map( a => r1,
                   b => r2,
+                  enable => aluEnable,
                   c => sllOut);
     slrOp : entity work.mySlr
         port map( a => r1,
                   b => r2,
+                  enable => aluEnable,
                   c => slrOut);
     xorOp : entity work.myXor
         port map( a => r1,
                   b => r2,
+                  enable => aluEnable,
                   c => xorOut);
     orOp : entity work.myOr
         port map( a => r1,
                   b => r2,
+                  enable => aluEnable,
                   c => orOut);
     notOp : entity work.myNot
         port map( a => r1,
+                  enable => aluEnable,
                   c => notOut);
     
     
@@ -93,6 +107,33 @@ begin
                   h => slrOut,
                   sel => selectOp,
                   rout => rout);
+    cmp_eq : entity work.cmp_eq
+        port map(
+                r1 => r1,
+                r2 => r2,
+                enable => branching,
+                isEq => outEq);
+                
+    cmp_lt : entity work.cmp_lt
+        port map(
+                r1 => r1,
+                r2 => r2,
+                enable => branching,
+                isLt => outLt);
 
-
-end Behavioral;
+    cmp_gt : entity work.cmp_gt
+        port map(
+                r1 => r1,
+                r2 => r2,
+                enable => branching,
+                isGt => outGt);
+                
+    Mux4 : entity work.Mux4to1
+        port map(
+                 a => outEq,
+                 b => outLt,
+                 c => outGt,
+                 d => '1',
+                 sel => selectOp(1 downto 0),
+                 rout => shouldBranch);
+end Structural;

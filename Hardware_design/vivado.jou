@@ -1,0 +1,44 @@
+#-----------------------------------------------------------
+# Vivado v2024.1 (64-bit)
+# SW Build 5076996 on Wed May 22 18:36:09 MDT 2024
+# IP Build 5075265 on Wed May 22 21:45:21 MDT 2024
+# SharedData Build 5076995 on Wed May 22 18:29:18 MDT 2024
+# Start of session at: Mon Feb 24 18:07:57 2025
+# Process ID: 3730
+# Current directory: /home/nayg/Project/Axolotl/Hardware_design
+# Command line: vivado
+# Log file: /home/nayg/Project/Axolotl/Hardware_design/vivado.log
+# Journal file: /home/nayg/Project/Axolotl/Hardware_design/vivado.jou
+# Running On        :nayg-IdeaPad-3-15IML05
+# Platform          :Linuxmint
+# Operating System  :Linux Mint 21.3
+# Processor Detail  :Intel(R) Core(TM) i3-10110U CPU @ 2.10GHz
+# CPU Frequency     :2600.000 MHz
+# CPU Physical cores:2
+# CPU Logical cores :4
+# Host memory       :8052 MB
+# Swap memory       :2147 MB
+# Total Virtual     :10199 MB
+# Available Virtual :7921 MB
+#-----------------------------------------------------------
+start_gui
+open_project /home/nayg/Project/Axolotl/Hardware_design/Axolotl.xpr
+update_compile_order -fileset sources_1
+close [ open /home/nayg/Project/Axolotl/Hardware_design/Axolotl.srcs/sources_1/new/Registers.vhd w ]
+add_files /home/nayg/Project/Axolotl/Hardware_design/Axolotl.srcs/sources_1/new/Registers.vhd
+update_compile_order -fileset sources_1
+export_ip_user_files -of_objects  [get_files /home/nayg/Project/Axolotl/Hardware_design/Axolotl.srcs/sources_1/new/ProgramCOunter.vhd] -no_script -reset -force -quiet
+remove_files  /home/nayg/Project/Axolotl/Hardware_design/Axolotl.srcs/sources_1/new/ProgramCOunter.vhd
+add_files -norecurse /home/nayg/Project/Axolotl/Hardware_design/Axolotl.srcs/sources_1/new/ProgramCounter.vhd
+update_compile_order -fileset sources_1
+close [ open /home/nayg/Project/Axolotl/Hardware_design/Axolotl.srcs/sources_1/new/Decodeur.vhd w ]
+add_files /home/nayg/Project/Axolotl/Hardware_design/Axolotl.srcs/sources_1/new/Decodeur.vhd
+update_compile_order -fileset sources_1
+close [ open /home/nayg/Project/Axolotl/Hardware_design/Axolotl.srcs/sources_1/new/cmp_gt.vhd w ]
+add_files /home/nayg/Project/Axolotl/Hardware_design/Axolotl.srcs/sources_1/new/cmp_gt.vhd
+close [ open /home/nayg/Project/Axolotl/Hardware_design/Axolotl.srcs/sources_1/new/cmp_lt.vhd w ]
+add_files /home/nayg/Project/Axolotl/Hardware_design/Axolotl.srcs/sources_1/new/cmp_lt.vhd
+update_compile_order -fileset sources_1
+close [ open /home/nayg/Project/Axolotl/Hardware_design/Axolotl.srcs/sources_1/new/cmp_eq.vhd w ]
+add_files /home/nayg/Project/Axolotl/Hardware_design/Axolotl.srcs/sources_1/new/cmp_eq.vhd
+update_compile_order -fileset sources_1

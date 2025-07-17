@@ -34,10 +34,19 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity myXor is
     Port ( a : in STD_LOGIC_VECTOR (15 downto 0);
            b : in STD_LOGIC_VECTOR (15 downto 0);
+           enable : in STD_LOGIC;
            c : out STD_LOGIC_VECTOR (15 downto 0));
 end myXor;
 
 architecture Behavioral of myXor is
 begin
-    c <= a xor b;
+    process(enable)
+    begin
+        if enable='1' then
+            c <= a xor b;
+        else
+            c <= (others => '0');
+        end if;
+    end process;            
+
 end Behavioral;

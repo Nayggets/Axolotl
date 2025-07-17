@@ -34,13 +34,20 @@ use IEEE.numeric_std.ALL;
 entity mySll is
     Port ( a : in STD_LOGIC_VECTOR (15 downto 0);
            b : in STD_LOGIC_VECTOR (15 downto 0);
+           enable : in STD_LOGIC;
            c : out STD_LOGIC_VECTOR (15 downto 0));
 end mySll;
 
 architecture Behavioral of mySll is
 
 begin
-    c <= std_logic_vector(shift_left(unsigned(a),to_integer(unsigned(b))));
-
+    process(enable)
+    begin
+        if enable='1' then
+            c <= std_logic_vector(shift_left(unsigned(a),to_integer(unsigned(b))));
+        else
+            c <= (others => '0');
+        end if;
+    end process;
 
 end Behavioral;

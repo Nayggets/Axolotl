@@ -35,14 +35,22 @@ use IEEE.NUMERIC_STD.ALL;
 entity Substractor is
     Port ( a : in STD_LOGIC_VECTOR (15 downto 0);
            b : in STD_LOGIC_VECTOR (15 downto 0);
-           c : out STD_LOGIC_VECTOR (15 downto 0););
+           enable : in STD_LOGIC;
+           c : out STD_LOGIC_VECTOR (15 downto 0));
 end Substractor;
 
 architecture Behavioral of Substractor is
     signal result : unsigned(16 downto 0);
 begin
-    
-    result <= '1' & unsigned(a) + ((not unsigned(b))+1);
-    c <= std_logic_vector(result(15 downto 0));
+    process(enable)
+    begin
+        if enable='1' then
+            result <= '1' & unsigned(a) + ((not unsigned(b))+1);
+            c <= std_logic_vector(result(15 downto 0));
+        else 
+            c <= (others => '0');
+        end if;
+    end process;
+
 
 end Behavioral;

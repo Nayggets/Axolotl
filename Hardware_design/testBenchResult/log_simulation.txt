@@ -1,0 +1,27 @@
+Running testbench: And_tb
+Testbench And_tb PASSED!
+
+Running testbench: Not_tb
+Testbench Not_tb PASSED!
+
+Running testbench: Or_tb
+Testbench Or_tb PASSED!
+
+Running testbench: Sll_tb
+Testbench Sll_tb PASSED!
+
+Running testbench: Slr_tb
+Testbench Slr_tb PASSED!
+
+Running testbench: Substract_tb
+Testbench Substract_tb PASSED!
+
+Running testbench: Xor_tb
+Testbench Xor_tb PASSED!
+
+Running testbench: RAM_tb
+Testbench RAM_tb PASSED!
+
+Running testbench: Adder_tb
+Testbench Adder_tb PASSED!
+

@@ -33,12 +33,19 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity myNot is
     Port ( a : in STD_LOGIC_VECTOR (15 downto 0);
+           enable : in STD_LOGIC;
            c : out STD_LOGIC_VECTOR (15 downto 0));
 end myNot;
 
 architecture Behavioral of myNot is
 
 begin
-    c <= not a;
-    
+    process(enable)
+    begin
+        if enable='1' then
+            c <= not a;
+        else 
+            c <= '0';
+        end if;
+    end process;
 end Behavioral;

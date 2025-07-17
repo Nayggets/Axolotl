@@ -36,6 +36,7 @@ entity Adder is
     Port ( 
            a : in STD_LOGIC_VECTOR (15 downto 0);
            b : in STD_LOGIC_VECTOR (15 downto 0);
+           enable : in STD_LOGIC;
            c : out STD_LOGIC_VECTOR (15 downto 0);
            carry : out STD_LOGIC);
 end Adder;
@@ -43,7 +44,15 @@ end Adder;
 architecture Behavioral of Adder is
     signal result : unsigned (16 downto 0);
 begin
-    result <= '0' & unsigned(a)+unsigned(b);
-    c <= std_logic_vector(result(15 downto 0));
-    carry <= result(16);
+    process(enable)
+    begin
+        if enable='1' then
+            result <= '0' & unsigned(a)+unsigned(b);
+            c <= std_logic_vector(result(15 downto 0));
+            carry <= result(16);
+        else 
+            c <= (others => '0');
+            carry <= '0';
+        end if;
+    end process;
 end Behavioral;

@@ -21,6 +21,7 @@
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.numeric_std.ALL;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
@@ -49,7 +50,10 @@ begin
     begin
         a <= "1110000000000000";
         b <= "1011111111111111";
+        ASSERT( c = "1010000000000000") REPORT "Test 1 échoué : 1110000000000000 & 1011111111111111 != " & integer'image(to_integer(unsigned(c))) SEVERITY ERROR;
+        REPORT "And_tb tous les tests passé" SEVERITY NOTE;
         wait;
+        
     end process;
         
 

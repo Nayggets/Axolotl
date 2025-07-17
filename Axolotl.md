@@ -34,9 +34,9 @@ J type is a group of instruction to do branching or calling function.
 | load_msb rd, imm[8bits] | I    | 1001 brd bimm       | rd[15:8] = imm                                                                |
 | mem_store rd,imm(rx)    | M    | 1010 brd bimm brx   | mem[rx+imm] = rd                                                              |
 | mem_load rd,imm(rx)     | M    | 1011 brd bimm brx   | rd = mem[rx+imm]                                                              |
-| je rx,ry,rz             | J    | 1100 brx bry brz    | if(rx==ry) R2 = pc ; pc = rz                                                  |
-| jlt rx,ry,rz            | J    | 1101 0000 0000 brz  | if(rx < ry) R2 = pc ; pc = rz                                                 |
-| jgt rx,ry,rz            | J    | 1110 brx bry brz    | if(rx > ry ) R2=pc ; pc = rz                                                  |
+| je rd,rx,ry             | J    | 1100 brx bry brz    | if(rx==ry) R2 = pc ; pc = rd                                                  |
+| jlt rd,rx,ry            | J    | 1101 0000 0000 brz  | if(rx < ry) R2 = pc ; pc = rd                                                 |
+| jgt rd,rx,ry            | J    | 1110 brx bry brz    | if(rx > ry ) R2=pc ; pc = rd                                                  |
 | `ret`                   | J    | 1111 0000 0000 0000 | pc = R2                                                                       |
 
 ## Pseudo instruction
