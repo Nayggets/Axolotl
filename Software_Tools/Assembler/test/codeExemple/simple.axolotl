@@ -2,22 +2,22 @@
 
 main:
     xor r1,r1,r1
-    xor r2,r2,r2
+    xor r6,r6,r6
     xor r3,r3,r3
     xor r4,r4,r4
     xor r5,r5,r5
     load_lsb r3,1
     load_lsb r1,32
-    load_msb r2,4
-    load_lsb r16,loop
-    load_msb r16,loop    
+    load_lsb r6,4
+    load_lsb r14,loop
+    load_msb r14,loop    
     load_msb r15,end
     load_lsb r15,end
     loop:
-        je r15,r5,r2
-        sub r2,r2,r3
+        je r5,r6,r15
+        sub r6,r6,r3
         add r4,r4,r1
-        je r16,r16,r16
+        je r14,r14,r14
     end:
     load_lsb r16,hlt
     load_msb r16,hlt

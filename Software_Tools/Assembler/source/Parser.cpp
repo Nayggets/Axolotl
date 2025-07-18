@@ -76,7 +76,7 @@ ASTProgNode *Parser::releaseAST()
 
 int Parser::parseLabel(token_t* token)
 {
-    this->labelTable[token->word] = this->address+1;
+    this->labelTable[token->word] = this->address;
     return 0;
 }
 

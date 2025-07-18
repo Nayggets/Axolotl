@@ -2,6 +2,7 @@
 #include <fstream>
 #include <vector>
 #include <cassert>
+       #include <unistd.h>
 #include "RAM.hpp"
 #include "Registers.hpp"
 #include "Decoder.hpp"

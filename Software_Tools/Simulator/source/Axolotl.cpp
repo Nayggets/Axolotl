@@ -9,9 +9,21 @@ void Axolotl::Emulate(std::ifstream& file)
     }
     assert(content.size() < 65536 && content.size() > 0);
     Instruction toExecute = {0};
+    
+
+    int i = 0;
     for(short binary : content){
-        this->decoder->DecodeInstruction(binary,&toExecute);
+        this->mem->setValue(binary,i);
+        i++;
+    }
+    short command = this->mem->getValue(0);
+    while(!this->stopped){
+        this->decoder->DecodeInstruction(command,&toExecute);
         this->Execute(&toExecute);
+        command = this->mem->getValue(this->PC);
+        this->printState();
+        usleep(100000);
+
     }
 
 
@@ -21,6 +33,7 @@ void Axolotl::Emulate(std::ifstream& file)
 
 void Axolotl::Execute(Instruction *toExecute)
 {
+    PC++;
     switch (toExecute->opcode)
     {
     case 0:
@@ -92,7 +105,7 @@ void Axolotl::Execute(Instruction *toExecute)
 
 void Axolotl::ExecuteAdd(Instruction* toExecute)
 {
-    this->registers->setValueRegister(toExecute->instruction.instructionL.rd,this->registers->getValueRegister(toExecute->instruction.instructionL.rx) - this->registers->getValueRegister(toExecute->instruction.instructionL.ry));
+    this->registers->setValueRegister(toExecute->instruction.instructionL.rd,this->registers->getValueRegister(toExecute->instruction.instructionL.rx) + this->registers->getValueRegister(toExecute->instruction.instructionL.ry));
 }
 void Axolotl::ExecuteSub(Instruction* toExecute)
 {
@@ -141,17 +154,22 @@ void Axolotl::ExecuteMemLoad(Instruction* toExecute)
 }
 void Axolotl::ExecuteJe(Instruction* toExecute)
 {
-    if(this->registers->getValueRegister(toExecute->instruction.instructionJ.rx) == this->registers->getValueRegister(toExecute->instruction.instructionJ.ry)){
+    std::cout << "Execute Je with : " << "rx value : " << this->registers->getValueRegister(toExecute->instruction.instructionJ.rx) << " ry value : " << this->registers->getValueRegister(toExecute->instruction.instructionJ.ry)  << " rz value : " << this->registers->getValueRegister(toExecute->instruction.instructionJ.rz) << std::endl;
+    if(toExecute->instruction.instructionJ.rx == 15 && toExecute->instruction.instructionJ.rx == toExecute->instruction.instructionJ.ry && toExecute->instruction.instructionJ.rx == toExecute->instruction.instructionJ.rz){
+        std::cout << "Programmed stopped" << toExecute->instruction.instructionJ.rx << std::endl;
+        stopped = true;
+    }
+    else if(this->registers->getValueRegister(toExecute->instruction.instructionJ.rx) == this->registers->getValueRegister(toExecute->instruction.instructionJ.ry)){
+        std::cout << "JE executed" << std::endl;
         this->PC = this->registers->getValueRegister(toExecute->instruction.instructionJ.rz);
         this->registers->setValueRegister(R2,PC);
     }
-    if(toExecute->instruction.instructionJ.rx == 15 && toExecute->instruction.instructionJ.rx == toExecute->instruction.instructionJ.ry && toExecute->instruction.instructionJ.rx == toExecute->instruction.instructionJ.rz){
-        stopped = true;
-    }
+    
 }
 void Axolotl::ExecuteJlt(Instruction* toExecute)
 {
     if(this->registers->getValueRegister(toExecute->instruction.instructionJ.rx) < this->registers->getValueRegister(toExecute->instruction.instructionJ.ry)){
+        std::cout << "JTL done" << std::endl;
         this->PC = this->registers->getValueRegister(toExecute->instruction.instructionJ.rz);
         this->registers->setValueRegister(R2,PC);
     }
@@ -159,6 +177,7 @@ void Axolotl::ExecuteJlt(Instruction* toExecute)
 void Axolotl::ExecuteJgt(Instruction* toExecute)
 {
     if(this->registers->getValueRegister(toExecute->instruction.instructionJ.rx) > this->registers->getValueRegister(toExecute->instruction.instructionJ.ry)){
+        std::cout << "JGT done" << std::endl;
         this->PC = this->registers->getValueRegister(toExecute->instruction.instructionJ.rz);
         this->registers->setValueRegister(R2,PC);
     }

@@ -15,10 +15,3 @@ void RAM::setValue(short value,short index)
     assert(index >= 0 && index < 65536);
     this->mem[index] = value;
 }
-
-void RAM::printRam()
-{
-    for(int i = 0 ; i < 16 ; i++){
-        
-    }
-}
