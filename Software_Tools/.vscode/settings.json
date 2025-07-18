@@ -47,6 +47,13 @@
         "map": "cpp",
         "fstream": "cpp",
         "sstream": "cpp",
-        "any": "cpp"
+        "any": "cpp",
+        "charconv": "cpp",
+        "optional": "cpp",
+        "format": "cpp",
+        "span": "cpp",
+        "variant": "cpp",
+        "text_encoding": "cpp",
+        "cassert": "cpp"
     }
 }

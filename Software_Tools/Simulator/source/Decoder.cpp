@@ -1,19 +1,22 @@
 #include "Decoder.hpp"
 
+Decoder::Decoder()
+{
+}
 
 void Decoder::DecodeInstruction(unsigned short binary, Instruction *dst)
 {
     dst->opcode = binary >> 12 & 0xFF;
-
-    if(dst->opcode & 0x08 == 0){
+    std::cout << (dst->opcode & 0x08) << std::endl;
+    if((dst->opcode & 0x08) == 0){
         std::cout << "I decode a L instruction" << std::endl;
         this->DecodeLInstruction(binary,dst);
     }
-    else if(dst->opcode & 0x12 == 3){
+    else if((dst->opcode & 12) == 12){
         std::cout << "I decode a J instruction" << std::endl;
         this->DecodeJInstruction(binary,dst);
     }
-    else if(binary >> 15 & 0x01 == 1 && binary >> 13 & 0x01 == 1){
+    else if((dst->opcode & 0x01) == 1 && ((dst->opcode >> 2) & 0x01) == 1){
         std::cout << "I decode a M instruction" << std::endl;
         this->DecodeMInstruction(binary,dst);
     }
