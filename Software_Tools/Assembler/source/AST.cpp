@@ -285,7 +285,6 @@ void ASTTerminalNodeRegister::print()
 
 
 
-
 uint8_t ASTTerminalNodeRegister::getNumberRegister()
 {
     return std::strtol(&this->registerName[1],nullptr,10) -1;    

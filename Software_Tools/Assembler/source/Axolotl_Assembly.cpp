@@ -13,7 +13,6 @@ int treat_file(std::string fileName,std::string outputFileName)
     }
     Lexer lexer((fileContent.c_str()));
     std::vector<token_t> tokens;
-    token_t token;
     Parser parser(&lexer);
     ASTProgNode* prog = parser.releaseAST();
     if(prog == nullptr){
