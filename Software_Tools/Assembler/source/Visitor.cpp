@@ -27,7 +27,11 @@ std::string uint16ToBitString(uint16_t x)
 
 int Visitor::visitTree(ASTProgNode *prog, std::string fileName, bool debug)
 {
-    outputFile.open(fileName);
+    std::ofstream outputFile;
+    outputFile.open(fileName,std::ios_base::out);
+    if(outputFile.is_open() == 0){
+        std::cerr << "Huge error file " << fileName << " fail to open" << std::endl;
+    }
     IAST* child;
     int i = 0;
     child = prog->getChildren(i);

@@ -3,7 +3,11 @@
 int treat_file(std::string fileName,std::string outputFileName)
 {
     std::ifstream If;
-    If.open(fileName);
+    If.open(fileName,std::ofstream::ios_base::in);
+
+    if(If.is_open() == 0){
+        std::cerr << "Huge error file " << fileName << " fail to open" << std::endl;
+    }
     std::string str = "";
     std::string fileContent = "";
     int line = 0;

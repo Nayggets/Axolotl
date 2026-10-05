@@ -34,34 +34,37 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity Decodeur is
     Port ( Instruction : in STD_LOGIC_VECTOR (15 downto 0);
            clk : in STD_LOGIC;
-           enable : in STD_LOGIC;
-           AluOp : out STD_LOGIC_VECTOR (2 downto 0);
-           AluEnable : out STD_LOGIC;
+           decodeStart : in STD_LOGIC;
+           Opcode : out STD_LOGIC_VECTOR (3 downto 0);
            immediate : out STD_LOGIC_VECTOR (7 downto 0);
            reg_write : out STD_LOGIC;
            rd_select : out STD_LOGIC_VECTOR (3 downto 0);
            rx_select : out STD_LOGIC_VECTOR (3 downto 0);
-           ry_select : out STD_LOGIC_VECTOR (3 downto 0));
+           ry_select : out STD_LOGIC_VECTOR (3 downto 0);
+           decodeFinish : out STD_LOGIC);
 end Decodeur;
 
 architecture Behavioral of Decodeur is
 
 begin
-   
-process(clk)
+
+
+
+process(decodeStart)
 begin
-    if rising_edge(clk) and enable='1' then
-        AluOp <= Instruction(14 downto 12);
-        AluEnable <= not Instruction(15);
+    if falling_edge(decodeStart) then
+        decodeFinish <= '0';
+    end if;
+    if rising_edge(clk) and decodeStart='1' then
+        Opcode <= Instruction(15 downto 12);
         ry_select <= Instruction(3 downto 0);
         rx_select <= Instruction(7 downto 4);
         rd_select <= Instruction(11 downto 8);
         if instruction(15 downto 12)="1010" or instruction(15 downto 12)="1011" then
-            AluEnable <= '0';
-        else
-            AluEnable <= '1';
-        end if;
-        if instruction(15)='0' then 
+            immediate <= "0000" & Instruction(7 downto 4);
+            if instruction(15 downto 12)="1011" then reg_write <= '1';
+            end if;
+        elsif instruction(15)='0' then 
             reg_write <= '1';
             immediate <= (others => '0');
         elsif instruction(15 downto 12)="1000" or instruction(15 downto 12)="1001" then

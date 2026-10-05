@@ -2,9 +2,9 @@
 -- Company: 
 -- Engineer: 
 -- 
--- Create Date: 02/20/2025 01:42:48 PM
+-- Create Date: 09/02/2026 05:02:12 AM
 -- Design Name: 
--- Module Name: Or - Behavioral
+-- Module Name: CU - Behavioral
 -- Project Name: 
 -- Target Devices: 
 -- Tool Versions: 
@@ -31,23 +31,24 @@ use IEEE.STD_LOGIC_1164.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity myOr is
-    Port ( a : in STD_LOGIC_VECTOR (15 downto 0);
-           b : in STD_LOGIC_VECTOR (15 downto 0);
-           enable : in STD_LOGIC;
-           c : out STD_LOGIC_VECTOR (15 downto 0));
-end myOr;
+entity CU is
+    Port ( clk : in STD_LOGIC;
+           shouldBranch : in STD_LOGIC;
+           memoryAccess : in STD_LOGIC;
+           AccessMemoryFinished : in STD_LOGIC);
+end CU;
 
-architecture Behavioral of myOr is
-
+architecture Behavioral of CU is
+type state_type is (Fetch,Decode,Execute,Store,WriteBack);
+signal current_state : state_type;
+signal next_state : state_type;
 begin
-    process(enable)
-    begin
-        if enable='1' then
-            c <= a or b;
-        else 
-            c <= (others => '0');
-        end if;
-    end process;
+
+process(clk)
+begin
+    if rising_edge(clk) then
+        current_state = next_state;
+    end if;
+end process;
 
 end Behavioral;

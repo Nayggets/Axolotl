@@ -5,8 +5,13 @@
 #include <string.h>
 #include <memory>
 #include <fstream>
+#include <iostream>
 #include <algorithm>
 #include <map>
+#include <string>
+#include <cctype>
+#include <math.h>
+
 
 class Parser
 {
@@ -26,10 +31,16 @@ class Parser
         int parseIInstruction(token_t* token);
         int parseMInstruction(token_t* token);
         int parseJInsutrction(token_t* token);
+        int parseSetInsutrction(token_t* token);
+        int parseMulInsutrction(token_t* token);
+        int parseDivInsutrction(token_t* token);
+        int parseModInsutrction(token_t* token);
+        int parseHltInsutrction(token_t* token);
+
         //parse register
         ASTTerminalNodeRegister* parseRegister(token_t* token);
         //parse immediate value
-        ASTTerminalNodeNumber* parseImmediateValue(token_t* token,token_t* oldtoken);
+        ASTTerminalNodeNumber* parseImmediateValue(token_t* token,token_t* oldtoken,uint bitNumber);
         void printParsingError(std::string nameOfActualParse, token_t* error, token_t* before_error,std::string erorrMessage);
         int expected(const char* expected,token_t* token);
 

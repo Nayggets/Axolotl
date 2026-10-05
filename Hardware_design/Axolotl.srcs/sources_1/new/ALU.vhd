@@ -2,7 +2,7 @@
 -- Company: 
 -- Engineer: 
 -- 
--- Create Date: 02/20/2025 03:26:34 PM
+-- Create Date: 09/02/2025 09:56:33 PM
 -- Design Name: 
 -- Module Name: ALU - Behavioral
 -- Project Name: 
@@ -24,7 +24,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
+use IEEE.NUMERIC_STD.ALL;
 
 -- Uncomment the following library declaration if instantiating
 -- any Xilinx leaf cells in this code.
@@ -32,108 +32,105 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity ALU is
-    Port ( r1 : in STD_LOGIC_VECTOR (15 downto 0);
+    Port ( opcode : in STD_LOGIC_VECTOR (3 downto 0);
+           execute : in STD_LOGIC;
+           r1 : in STD_LOGIC_VECTOR (15 downto 0);
            r2 : in STD_LOGIC_VECTOR (15 downto 0);
-           aluEnable : in STD_LOGIC;
-           branching : in STD_LOGIC;
-           selectOp : in STD_LOGIC_VECTOR (2 downto 0);
+           rd : in STD_LOGIC_VECTOR (15 downto 0);
+           immediate : in STD_LOGIC_VECTOR (7 downto 0);
            shouldBranch : out STD_LOGIC;
-           rout : out STD_LOGIC_VECTOR (15 downto 0));
+           memoryAccess : out STD_LOGIC;
+           loadOrStore : out STD_LOGIC;
+           returnOn : out STD_LOGIC;
+           result : out STD_LOGIC_VECTOR (15 downto 0);
+           executeFinish : out STD_LOGIC) ;
 end ALU;
 
-architecture Structural of ALU is
-    signal andOut : STD_LOGIC_VECTOR(15 downto 0);
-    signal xorOut : STD_LOGIC_VECTOR(15 downto 0);
-    signal orOut : STD_LOGIC_VECTOR(15 downto 0);
-    signal notOut : STD_LOGIC_VECTOR(15 downto 0);
-    signal sllOut : STD_LOGIC_VECTOR(15 downto 0);
-    signal slrOut : STD_LOGIC_VECTOR(15 downto 0);
-    signal addOut : STD_LOGIC_VECTOR(15 downto 0);
-    signal subOut : STD_LOGIC_VECTOR(15 downto 0);
-    signal outEq  : STD_LOGIC;
-    signal outGt  : STD_LOGIC;
-    signal outLt  : STD_LOGIC;
+architecture Behavioral of ALU is
 
-begin
-    andOp : entity work.myAnd
-        port map( a => r1,
-                  b => r2,
-                  enable => aluEnable,
-                  c => andOut);
-    addOp : entity work.Adder 
-        port map( a => r1,
-                  b => r2,
-                  enable => aluEnable,
-                  c => addOut);
-    subOp : entity work.Substractor
-        port map( a => r1,
-                  b => r2,
-                  enable => aluEnable,
-                  c => subOut);
-    sllOp : entity work.mySll
-        port map( a => r1,
-                  b => r2,
-                  enable => aluEnable,
-                  c => sllOut);
-    slrOp : entity work.mySlr
-        port map( a => r1,
-                  b => r2,
-                  enable => aluEnable,
-                  c => slrOut);
-    xorOp : entity work.myXor
-        port map( a => r1,
-                  b => r2,
-                  enable => aluEnable,
-                  c => xorOut);
-    orOp : entity work.myOr
-        port map( a => r1,
-                  b => r2,
-                  enable => aluEnable,
-                  c => orOut);
-    notOp : entity work.myNot
-        port map( a => r1,
-                  enable => aluEnable,
-                  c => notOut);
+begin 
+process(execute)
+begin        
+    if falling_edge(execute) then
+        executeFinish <= '0';
+    elsif rising_edge(execute) then
     
-    
-    selectMux : entity work.Mux16bit_8To1
-        port map( a => addOut,
-                  b => subOut,
-                  c => xorOut,
-                  d => andOut,
-                  e => notOut,
-                  f => orOut,
-                  g => sllOut,
-                  h => slrOut,
-                  sel => selectOp,
-                  rout => rout);
-    cmp_eq : entity work.cmp_eq
-        port map(
-                r1 => r1,
-                r2 => r2,
-                enable => branching,
-                isEq => outEq);
-                
-    cmp_lt : entity work.cmp_lt
-        port map(
-                r1 => r1,
-                r2 => r2,
-                enable => branching,
-                isLt => outLt);
+        shouldBranch <= '0';
+        memoryAccess <= '0';
+        returnOn <= '0';
+        case opcode is
+            when "0000" =>
+                result <= std_logic_vector(unsigned(r1) + unsigned(r2));
+            when "0001" =>
+                result <= std_logic_vector(unsigned(r1) - unsigned(r2));
+            when "0010" =>
+                result <= r1 xor r2;
+            when "0011" => 
+                result <= r1 and r2;
+            when "0100" =>
+                result <= not r1;
+            when "0101" =>
+                result <= r1 or r2;
+            when "0110" => 
+                result <= std_logic_vector(shift_left(unsigned(r1), to_integer(unsigned(r2))));
+            when "0111" => 
+                result <= std_logic_vector(shift_right(unsigned(r1), to_integer(unsigned(r2))));
+            when "1000" =>
+                result(7 downto 0) <= immediate;
+                result(15 downto 8) <= rd(15 downto 8);
+            when "1001" =>
+                --result <= r1 msb imm
+                result(15 downto 8) <= immediate;
+                result(7 downto 0) <= rd(7 downto 0);
+            when "1010" =>
+                memoryAccess <= '1';
+                result <= std_logic_vector(unsigned(immediate) + unsigned(r2));
+                loadOrStore <= '1';
+                --memory address calculus imm + rz value
+            when "1011" =>
+                memoryAccess <= '1';
+                result <= std_logic_vector(unsigned(immediate) + unsigned(r2));
+                loadOrStore <= '0';
 
-    cmp_gt : entity work.cmp_gt
-        port map(
-                r1 => r1,
-                r2 => r2,
-                enable => branching,
-                isGt => outGt);
-                
-    Mux4 : entity work.Mux4to1
-        port map(
-                 a => outEq,
-                 b => outLt,
-                 c => outGt,
-                 d => '1',
-                 sel => selectOp(1 downto 0),
-                 rout => shouldBranch);
-end Structural;
+                --memory address calculus imm + rz value
+            when "1100" =>
+                -- check if r1 equal r2
+                -- should branch
+                -- result = address of jump
+                if rd=r1 then
+                    shouldBranch <= '1';
+                    result <= r2;
+                else
+                    --result = rd value nothing change
+                    result <= rd;
+                end if;
+            when "1101" =>
+                -- check if r1 < r2
+                -- should branch 
+                -- result = address of jump
+                if rd<r1 then
+                    shouldBranch <= '1';
+                    result <= r2;
+                else
+                    result <= rd;
+                end if;
+            when "1110" =>
+                -- check if r1 > r2
+                -- should branch 
+                -- result = address of jump
+                if rd>r1 then 
+                    shouldBranch <= '1';
+                    result <= r2;
+                else 
+                    result <= rd;
+                end if;
+            when "1111" =>
+                shouldBranch <= '1';
+                returnOn <= '1';
+                --return : jump to rv value
+        end case;
+        executeFinish <= '1';
+    end if;
+end process;
+
+end Behavioral;

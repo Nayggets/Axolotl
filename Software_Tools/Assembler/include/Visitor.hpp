@@ -26,5 +26,4 @@ class Visitor
         std::any visitMInstruction(ASTMTypeInstructionNode* ctx);
     private:
         ASTProgNode* program;
-        std::ofstream outputFile;
 };

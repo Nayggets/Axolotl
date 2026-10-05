@@ -1,14 +1,26 @@
 
 
 main:
-    set a0,32
-    set a1,2
-    set j1,mul
-    je R4,R4,j1
+
+
+
     hlt
 
 
-mul
+aes:
+    and T0,a0,a0 
+    set T6, 9
+    set 
+
+
+
+
+
+
+
+mul:
+    xor T0,T0,T0
+    xor T1,T1,T1
     and T0,a0,a0
     and T1,a1,a1
     set T2, 0
@@ -22,4 +34,10 @@ mul
         je T1,T1,R16
     end:
     ret
+
+
+
+
+
+
 

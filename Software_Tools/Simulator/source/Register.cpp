@@ -33,6 +33,8 @@ void Registers::setMSBRegister(short index,unsigned char value)
 void Registers::printRegister()
 {
     for(int i = 0 ; i < 16 ; i++){
-        std::cout << registerName[i] << " : " << this->registers[i] << std::endl;
+        if(this->registers[i] != 0){
+            std::cout << registerName[i] << " : " << this->registers[i] << std::endl;
+        }
     }
 }

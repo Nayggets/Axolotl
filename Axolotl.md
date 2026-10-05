@@ -51,7 +51,7 @@ J type is a group of instruction to do branching or calling function.
 
 ## Register
 
-| Registe | Description                                 | Name | Binary | Saver   |
+| Register| Description                                 | Name | Binary | Saver   |
 | ------- | ------------------------------------------- | ---- | ------ | ------- |
 | R1      | Stack pointeur use to handle the stack      | sp   | 0000   | Callee  |
 | R2      | Return addresse use for the ret instruction | ra   | 0001   | Callee  |

@@ -423,7 +423,6 @@ ASTTerminalNodeRegister* Parser::parseRegister(token_t* token)
     std::string tokenword = token->word;
     
     std::transform(tokenword.begin(), tokenword.end(), tokenword.begin(), ::toupper);
-    std::cout << "token word is : " << tokenword << "and token type is : " << token->token_type << std::endl;
     if(token->token_type != tok_identifier || (std::count(registers.begin(),registers.end(),tokenword) == 0 && std::count(pseudoRegisters.begin(),pseudoRegisters.end(),tokenword) == 0)){
         this->printParsingError("Register parse",token,&oldToken,"Expected a register : {R1,R2,R3,...,R16} or pseudo register : {SP,RA,A0,...,J1,J2}");
         return nullptr;

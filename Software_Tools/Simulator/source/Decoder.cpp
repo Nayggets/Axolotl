@@ -7,7 +7,7 @@ Decoder::Decoder()
 void Decoder::DecodeInstruction(unsigned short binary, Instruction *dst)
 {
     dst->opcode = binary >> 12 & 0xFF;
-    std::cout << (dst->opcode & 0x08) << std::endl;
+    //std::cout << (dst->opcode & 0x08) << std::endl;
     if((dst->opcode & 0x08) == 0){
         std::cout << "I decode a L instruction" << std::endl;
         this->DecodeLInstruction(binary,dst);
@@ -40,7 +40,7 @@ void Decoder::DecodeIInstruction(unsigned short binary, Instruction *dst)
 {
     dst->instruction.instructionI.rd= binary >> 8 & 0xF;
     dst->instruction.instructionI.imm = binary & 0xFF;
-    std::cout << "LInstruction : " << dst->instruction.instructionI.rd << " " <<dst->instruction.instructionI.imm << std::endl;
+    std::cout << "IInstruction : " << dst->instruction.instructionI.rd << " " <<dst->instruction.instructionI.imm << std::endl;
 }
 void Decoder::DecodeMInstruction(unsigned short binary, Instruction *dst)
 {

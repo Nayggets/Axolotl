@@ -32,15 +32,19 @@ use IEEE.numeric_std.ALL;
 --use UNISIM.VComponents.all;
 
 entity Registers is
-    Port ( enable : in STD_LOGIC;
-           clk  : in STD_LOGIC;
-           write_enable : in STD_LOGIC;
+    Port ( writeBack : in STD_LOGIC;
            rd : in STD_LOGIC_VECTOR (15 downto 0);
+           r1_addr : in STD_LOGIC_VECTOR (3 downto 0);
+           r2_addr : in STD_LOGIC_VECTOR (3 downto 0);
            rd_addr : in STD_LOGIC_VECTOR (3 downto 0);
-           rx : out STD_LOGIC_VECTOR (15 downto 0);
-           rx_addr : in STD_LOGIC_VECTOR (3 downto 0);
-           ry : out STD_LOGIC_VECTOR (15 downto 0);
-           ry_addr : in STD_LOGIC_VECTOR (3 downto 0));
+           wr_rv : in STD_LOGIC;
+           rv_in : in STD_LOGIC_VECTOR (15 downto 0);
+           rv_out : out STD_LOGIC_VECTOR(15 downto 0);
+           r1 : out STD_LOGIC_VECTOR (15 downto 0); 
+           r2 : out STD_LOGIC_VECTOR (15 downto 0);
+           rd_out : out STD_LOGIC_VECTOR (15 downto 0);
+           writeBackFinish : out STD_LOGIC);
+
 end Registers;
 
 architecture Behavioral of Registers is
@@ -48,14 +52,21 @@ type registers is array(0 to 15) of std_logic_vector(15 downto 0);
 signal reg : registers := (others => X"0000000000000000");
 begin
 
-process (clk)
-begin
-    if rising_edge(clk) and enable='1' then
-        rx <= reg(TO_INTEGER(unsigned(rx_addr)));
-        ry <= reg(TO_INTEGER(unsigned(ry_addr)));
-        if write_enable='1' then
-            reg(TO_INTEGER(unsigned(rd_addr))) <= rd;
+
+ r1 <= reg(TO_INTEGER(unsigned(r1_addr)));
+ r2 <= reg(TO_INTEGER(unsigned(r2_addr)));
+ rd_out <= reg(TO_INTEGER(unsigned(rd_addr)));
+ 
+ process(writeBack)
+ begin 
+    if falling_edge(writeBack) then
+        writeBackFinish <= '0';  
+    elsif rising_edge(writeBack) then
+        reg(TO_INTEGER(unsigned(rd_addr))) <= rd;
+        if wr_rv='1' then
+            reg(1) <= rv_in;
         end if;
+        writeBackFinish <= '1';
     end if;
 end process;
 

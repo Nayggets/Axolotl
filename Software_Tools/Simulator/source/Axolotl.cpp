@@ -27,7 +27,7 @@ void Axolotl::Emulate(std::ifstream& file)
     }
 
 
-    this->printState();
+    //this->printState();
 
 }
 
@@ -156,7 +156,7 @@ void Axolotl::ExecuteJe(Instruction* toExecute)
 {
     std::cout << "Execute Je with : " << "rx value : " << this->registers->getValueRegister(toExecute->instruction.instructionJ.rx) << " ry value : " << this->registers->getValueRegister(toExecute->instruction.instructionJ.ry)  << " rz value : " << this->registers->getValueRegister(toExecute->instruction.instructionJ.rz) << std::endl;
     if(toExecute->instruction.instructionJ.rx == 15 && toExecute->instruction.instructionJ.rx == toExecute->instruction.instructionJ.ry && toExecute->instruction.instructionJ.rx == toExecute->instruction.instructionJ.rz){
-        std::cout << "Programmed stopped" << toExecute->instruction.instructionJ.rx << std::endl;
+        std::cout << "Programmed stopped" << std::endl;
         stopped = true;
     }
     else if(this->registers->getValueRegister(toExecute->instruction.instructionJ.rx) == this->registers->getValueRegister(toExecute->instruction.instructionJ.ry)){

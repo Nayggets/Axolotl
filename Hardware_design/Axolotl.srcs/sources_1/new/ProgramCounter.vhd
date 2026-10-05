@@ -35,7 +35,6 @@ entity ProgramCounter is
     Port ( load : in STD_LOGIC;
            loadValue : in STD_LOGIC_VECTOR (15 downto 0);
            enable : in STD_LOGIC;
-           inc : in STD_LOGIC;
            PC : out STD_LOGIC_VECTOR (15 downto 0);
            deb : out STD_LOGIC);
 end ProgramCounter;
@@ -48,7 +47,7 @@ begin
         if rising_edge(enable) then
             if load='1' then
                 internal_counter <= unsigned(loadValue);
-            elsif inc='1' then
+            else
                 if internal_counter="111111111111111111" then
                     internal_counter <= (others => '0');
                 else 
